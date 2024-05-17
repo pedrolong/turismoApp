@@ -1,3 +1,5 @@
+import { Header } from "react-native/Libraries/NewAppScreen";
+
 export const StylesConteudo = {
   container: {
     flex: 1,
@@ -14,7 +16,7 @@ export const StylesConteudo = {
     width: "100%",
     height: "60%",
   },
-  btnMore: {
+  btnVoltar: {
     marginLeft: 30,
     backgroundColor: "#326e6c",
     width: 40,
@@ -29,6 +31,109 @@ export const StylesConteudo = {
     width: 40,
     height: 40,
     borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  header: { flex: 1, backgroundColor: "", flexDirection: "row" },
+
+  leftHeader: { width: "50%", height: "100%", justifyContent: "center" },
+
+  TxtNomecidade: {
+    marginLeft: 20,
+    fontSize: 30,
+    fontFamily: "Pacifico-Regular",
+    color: "#000",
+  },
+
+  TxtIntroduçaocidade: {
+    marginLeft: 20,
+    fontSize: 18,
+    fontFamily: "Caveat-VariableFont_wght",
+    color: "#000",
+  },
+  btnMore: {
+    marginLeft: "60%",
+    backgroundColor: "#326e6c",
+    padding: 5,
+    width: "40%",
+    marginTop: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  TxtbtnMore: { color: "#FFF", fontFamily: "Caveat-VariableFont_wght" },
+  rigthHeader: {
+    width: "10%",
+    height: "10%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "30%",
+  },
+  ImgIntroduçao: {
+    height: 300,
+    width: 270,
+    resizeMode: "contain",
+    marginRight: -100,
+    transform: [{ rotate: "35deg" }],
+  },
+  Carossel: { width: "100%", height: "40%" },
+
+  BodyScroll: {
+    flex: 1,
+    alignItems: "flex-start",
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+  ImgCarossel: { height: "90%", width: 200, margin: 10, borderRadius: 20 },
+  Tamanhomodal: { width: "100%" },
+  headerModal: {
+    width: "100%",
+    height: "10%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+  },
+  CaixaModal: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    paddingBottom: 50,
+  },
+  TamanhoCaixamodal: {
+    width: "90%",
+    height: "50%",
+    borderRadius: 30,
+    padding: 30,
+    backgroundColor: "#326e6c88",
+    justifyContent: "center",
+  },
+  Localizaçao: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: 18,
+  },
+  TxtLocalizaçao: { marginLeft: 10, color: "#FFFFFF" },
+  AlgLocalizaçao: {
+    width: "100%",
+    borderBottomWidth: 1,
+    borderColor: "#FFFFFF",
+    marginTop: 15,
+    marginBottom: 15,
+  },
+  AlgInformaçao: {
+    flexDirection: "row",
+    marginLeft: 18,
+    justifyContent: "space-around",
+  },
+  AlgInformaçao2: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  BtnPressme: {
+    backgroundColor: "#FFF",
+    padding: 5,
+    borderRadius: 20,
+    marginTop: 20,
     alignItems: "center",
     justifyContent: "center",
   },

@@ -26,6 +26,7 @@ import { useNavigation } from "@react-navigation/native";
 
 // Import Hook USESTATE
 import { useState, useEffect } from "react";
+import { StylesConteudo } from "../styles/StylesConteudo";
 
 //
 const { height: DEVICE_HEIGHT } = Dimensions.get("window");
@@ -56,162 +57,51 @@ export default function Dubai() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#fff" }}>
-      <View
-        style={{
-          width: "100%",
-          height: "60%",
-        }}
-      >
-        <View
-          style={{
-            width: "100%",
-            height: "20%",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "flex-end",
-          }}
-        >
+    <View style={StylesConteudo.container}>
+      <View style={StylesConteudo.introduçao}>
+        <View style={StylesConteudo.icons}>
           <TouchableOpacity
-            style={{
-              marginLeft: 30,
-              backgroundColor: "#326e6c",
-              width: 40,
-              height: 40,
-              borderRadius: 100,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
+            style={StylesConteudo.btnVoltar}
             onPress={() => navigation.navigate("HomeStack")}
           >
             <FontAwesome name="arrow-left" size={24} color="white" />
           </TouchableOpacity>
           <TouchableOpacity
-            style={{
-              marginRight: 30,
-              backgroundColor: "#326e6c",
-              width: 40,
-              height: 40,
-              borderRadius: 100,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
+            style={StylesConteudo.btnMaps}
             onPress={() => alert("MAPS")}
           >
             <Fontisto name="world" size={24} color="white" />
           </TouchableOpacity>
         </View>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "#fff",
-            flexDirection: "row",
-          }}
-        >
-          <View
-            style={{
-              width: "50%",
-              height: "100%",
-              justifyContent: "center",
-            }}
-          >
-            <Text
-              style={{
-                marginLeft: 20,
-                fontSize: 30,
-                fontFamily: "Pacifico-Regular",
-                color: "#000",
-              }}
-            >
-              the {"\n"}Dubai
-            </Text>
-            <Text
-              style={{
-                marginLeft: 20,
-                fontSize: 18,
-                fontFamily: "Caveat-VariableFont_wght",
-                color: "#000",
-              }}
-            >
-              New York, often called New York City or simply NYC, is the most
-              populous city in the United States, located at the southern tip of
-              New York State on one of the world's largest natural harbors.
+
+        <View style={StylesConteudo.header}>
+          <View style={StylesConteudo.leftHeader}>
+            <Text style={StylesConteudo.TxtNomecidade}>the {"\n"}Dubai</Text>
+            <Text style={StylesConteudo.TxtIntroduçaocidade}>
+              Londres, a capital do Reino Unido, é uma das cidades mais
+              vibrantes e culturalmente ricas do mundo.
             </Text>
             <TouchableOpacity
-              style={{
-                marginLeft: "60%",
-                backgroundColor: "#326e6c",
-                padding: 5,
-                width: "40%",
-                marginTop: 10,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
+              style={StylesConteudo.btnMore}
               onPress={() => setVis(true)}
             >
-              <Text
-                style={{
-                  color: "#FFF",
-                  fontFamily: "Caveat-VariableFont_wght",
-                }}
-              >
-                MORE
-              </Text>
+              <Text style={StylesConteudo.TxtbtnMore}>MORE</Text>
             </TouchableOpacity>
           </View>
-          <View
-            style={{
-              width: "40%",
-              height: "100%",
-              justifyContent: "center",
-              alignItems: "flex-end",
-            }}
-          >
+          <View style={StylesConteudo.rigthHeader}>
             <Image
-              source={require("../assets/images/dubai4.jpg")}
-              style={{
-                height: 200,
-                width: 500,
-                resizeMode: "center",
-                marginRight: -230,
-                transform: [{ rotate: "35deg" }],
-              }}
+              source={require("../assets/images/reinoUnido.png")}
+              style={StylesConteudo.ImgIntroduçao}
             />
           </View>
         </View>
       </View>
-      <View
-        style={{
-          width: "100%",
-          height: "40%",
-        }}
-      >
-        <Text
-          style={{
-            color: "#000",
-            fontFamily: "Pacifico-Regular",
-            fontSize: 20,
-            marginLeft: 20,
-          }}
-        >
-          Pictures:
-        </Text>
+      <View style={StylesConteudo.Carossel}>
+        <Text style={StylesConteudo.TxtNomecidade}>Pictures:</Text>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          <View
-            style={{
-              flex: 1,
-              alignItems: "flex-start",
-              justifyContent: "center",
-              flexDirection: "row",
-            }}
-          >
+          <View style={StylesConteudo.BodyScroll}>
             <Image
-              style={{
-                height: "90%",
-                width: 200,
-                margin: 10,
-                borderRadius: 20,
-              }}
+              style={StylesConteudo.ImgCarossel}
               source={require("../assets/images/dubai1.jpeg")}
             />
             <Image
@@ -224,58 +114,28 @@ export default function Dubai() {
               source={require("../assets/images/dubai2.jpg")}
             />
             <Image
-              style={{
-                height: "90%",
-                width: 200,
-                margin: 10,
-                borderRadius: 20,
-              }}
+              style={StylesConteudo.ImgCarossel}
               source={require("../assets/images/dubai3.jpg")}
             />
             <Image
-              style={{
-                height: "90%",
-                width: 200,
-                margin: 10,
-                borderRadius: 20,
-              }}
-              source={require("../assets/images/dubai4.jpg")}
+              style={StylesConteudo.ImgCarossel}
+              source={require("../assets/images/paris.jpg")}
             />
             <Image
-              style={{
-                height: "90%",
-                width: 200,
-                margin: 10,
-                borderRadius: 20,
-              }}
-              source={require("../assets/images/dubai5.jpeg")}
+              style={StylesConteudo.ImgCarossel}
+              source={require("../assets/images/rioDeJaneiro.jpg")}
             />
             <Image
-              style={{
-                height: "90%",
-                width: 200,
-                margin: 10,
-                borderRadius: 20,
-              }}
-              source={require("../assets/images/dubai6.jpeg")}
+              style={StylesConteudo.ImgCarossel}
+              source={require("../assets/images/toquio.jpg")}
             />
             <Image
-              style={{
-                height: "90%",
-                width: 200,
-                margin: 10,
-                borderRadius: 20,
-              }}
-              source={require("../assets/images/dubai8.jpg")}
+              style={StylesConteudo.ImgCarossel}
+              source={require("../assets/images/london.jpg")}
             />
             <Image
-              style={{
-                height: "90%",
-                width: 200,
-                margin: 10,
-                borderRadius: 20,
-              }}
-              source={require("../assets/images/ny8.png")}
+              style={StylesConteudo.ImgCarossel}
+              source={require("../assets/images/ny2.png")}
             />
           </View>
         </ScrollView>
@@ -283,30 +143,16 @@ export default function Dubai() {
 
       <Modal visible={vis}>
         <StatusBar hidden />
-        <Animated.View style={{ width: "100%", height: heightValue }}>
+        <Animated.View
+          style={[StylesConteudo.Tamanhomodal, { height: heightValue }]}
+        >
           <ImageBackground
-            source={require("../assets/images/dubai9.jpeg")}
+            source={require("../assets/images/reinoUnidoBackground.jpg")}
             style={{ width: "100%", height: "100%" }}
           >
-            <View
-              style={{
-                width: "100%",
-                height: "10%",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "flex-end",
-              }}
-            >
+            <View style={StylesConteudo.headerModal}>
               <TouchableOpacity
-                style={{
-                  marginLeft: 30,
-                  backgroundColor: "#326e6c",
-                  width: 40,
-                  height: 40,
-                  borderRadius: 100,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
+                style={StylesConteudo.btnVoltar}
                 onPress={() => {
                   setVis(false);
                   heightValue.setValue(0);
@@ -315,109 +161,43 @@ export default function Dubai() {
                 <FontAwesome name="arrow-left" size={24} color="white" />
               </TouchableOpacity>
             </View>
-            <View
-              style={{
-                flex: 1,
-                alignItems: "center",
-                justifyContent: "flex-end",
-                paddingBottom: 30,
-              }}
-            >
-              <View
-                style={{
-                  width: "90%",
-                  height: "50%",
-                  borderRadius: 30,
-                  padding: 30,
-                  backgroundColor: "#326e6c88",
-                  justifyContent: "center",
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    marginLeft: 18,
-                  }}
-                >
+            <View style={StylesConteudo.CaixaModal}>
+              <View style={StylesConteudo.TamanhoCaixamodal}>
+                <View style={StylesConteudo.Localizaçao}>
                   <FontAwesome5 name="map-pin" size={30} color="#FFFFFF" />
-                  <Text style={{ marginLeft: 10, color: "#FFFFFF" }}>
-                    Catedral de Iorque{"\n"}Iorque, Inglaterra
+                  <Text style={StylesConteudo.TxtLocalizaçao}>
+                    Burj Khalifa{"\n"}Dubai, Emirados Árabes Unidos
                   </Text>
                 </View>
-                <View
-                  style={{
-                    width: "100%",
-                    borderBottomWidth: 1,
-                    borderColor: "#FFFFFF",
-                    marginTop: 15,
-                    marginBottom: 15,
-                  }}
-                ></View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    marginLeft: 18,
-                    justifyContent: "space-around",
-                  }}
-                >
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
+                <View style={StylesConteudo.AlgLocalizaçao}></View>
+                <View style={StylesConteudo.AlgInformaçao}>
+                  <View style={StylesConteudo.AlgInformaçao2}>
                     <AntDesign name="star" size={24} color="#ffffff" />
-                    <Text style={{ marginLeft: 5, color: "#FFFFFF" }}>4.5</Text>
+                    <Text style={StylesConteudo.TxtLocalizaçao}>4.5</Text>
                   </View>
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
+                  <View style={StylesConteudo.AlgInformaçao2}>
                     <FontAwesome6
                       name="temperature-empty"
                       size={24}
                       color="#ffffff"
                     />
-                    <Text style={{ marginLeft: 5, color: "#FFFFFF" }}>
-                      16ºC
-                    </Text>
+                    <Text style={StylesConteudo.TxtLocalizaçao}>33ºC</Text>
                   </View>
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
+                  <View style={StylesConteudo.AlgInformaçao2}>
                     <Fontisto name="date" size={24} color="#ffffff" />
-                    <Text style={{ marginLeft: 5, color: "#FFFFFF" }}>
-                      7 days
-                    </Text>
+                    <Text style={StylesConteudo.TxtLocalizaçao}>7 days</Text>
                   </View>
                 </View>
-                <View style={{ marginLeft: 18, marginTop: 15 }}>
-                  <Text style={{ color: "#FFFFFF" }}>Description</Text>
+                <View style={StylesConteudo.TxtIntroduçaocidade}>
+                  <Text style={{ color: "#FFFFFF" }}>Descrição</Text>
                   <Text style={{ color: "#FFFFFF" }}>
-                    New York, often called New York City[b] or simply NYC, is
-                    the most populous city in the United States, located at the
-                    southern tip of New York State on one of the world's largest
-                    natural harbors.
+                    Burj Khalifa Bin Zayid, anteriormente conhecido como Burj
+                    Dubai, é um arranha-céu localizado em Dubai, nos Emirados
+                    Árabes Unidos, sendo a mais alta estrutura e,
+                    consequentemente, o maior arranha-céu já construído pelo ser
+                    humano, com 828 metros de altura e 160 andares.
                   </Text>
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: "#FFF",
-                      padding: 5,
-                      borderRadius: 20,
-                      marginTop: 20,
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
+                  <TouchableOpacity style={StylesConteudo.BtnPressme}>
                     <Text style={{ color: "#326e6c88" }}>Press me!</Text>
                   </TouchableOpacity>
                 </View>
