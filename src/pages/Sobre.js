@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 
-//import
+//import fonts
 import { useFonts } from "expo-font";
 
 export default function Sobre() {
