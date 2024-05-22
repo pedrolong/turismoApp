@@ -5,6 +5,7 @@ import { View } from "react-native";
 // Import pages
 import Sobre from "../pages/Sobre";
 import Busca from "../pages/Busca";
+import Mapa from "../pages/maps";
 
 // Import icons FONTAWESOME
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -49,6 +50,8 @@ export default function Index() {
               iconName = "newspaper-o";
             } else if (route.name === "Busca") {
               iconName = "search";
+            } else if (route.name === "Mapa") {
+              iconName = "map";
             }
 
             return (
@@ -79,9 +82,15 @@ export default function Index() {
           component={Sobre}
           options={{ title: "", headerShown: false }}
         />
+        {/* 
         <Tab.Screen
           name="Busca"
           component={Busca}
+          options={{ title: "", headerShown: false }}
+        /> */}
+        <Tab.Screen
+          name="Mapa"
+          component={Mapa}
           options={{ title: "", headerShown: false }}
         />
       </Tab.Navigator>

@@ -9,8 +9,11 @@ import {
   StatusBar,
   Animated,
   Dimensions,
+  StyleSheet,
 } from "react-native";
 
+import MapView, { Marker } from "react-native-maps";
+import * as Location from "expo-location";
 // Imports icons
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -25,15 +28,30 @@ import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
 
 // Import Hook USESTATE
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { StylesConteudo } from "../styles/StylesConteudo";
 
 //
+const locations = [{ latitude: 45.4408, longitude: 12.3155, title: "Veneza" }];
 const { height: DEVICE_HEIGHT } = Dimensions.get("window");
 
 export default function Veneza() {
   const [vis, setVis] = useState(false);
   const [heightValue] = useState(new Animated.Value(0));
+  const [visMap, setVisMap] = useState(false);
+  const [location, setLocation] = React.useState(null);
+  React.useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location.coords);
+    })();
+  }, []);
 
   const navigation = useNavigation();
   const [fontsLoaded] = useFonts({
@@ -68,7 +86,7 @@ export default function Veneza() {
           </TouchableOpacity>
           <TouchableOpacity
             style={StylesConteudo.btnMaps}
-            onPress={() => alert("MAPS")}
+            onPress={() => setVisMap(true)}
           >
             <Fontisto name="world" size={24} color="white" />
           </TouchableOpacity>
@@ -76,10 +94,11 @@ export default function Veneza() {
 
         <View style={StylesConteudo.header}>
           <View style={StylesConteudo.leftHeader}>
-            <Text style={StylesConteudo.TxtNomecidade}>the {"\n"}Veneza</Text>
+            <Text style={StylesConteudo.TxtNomecidade}>Veneza</Text>
             <Text style={StylesConteudo.TxtIntroduçaocidade}>
-              Londres, a capital do Reino Unido, é uma das cidades mais
-              vibrantes e culturalmente ricas do mundo.
+              Veneza, no norte da Itália, é formada por mais de 100 pequenas
+              ilhas em uma lagoa no Mar Adriático. A cidade não tem estradas,
+              apenas canais, repletos de palácios góticos e renascentistas.
             </Text>
             <TouchableOpacity
               style={StylesConteudo.btnMore}
@@ -90,19 +109,25 @@ export default function Veneza() {
           </View>
           <View style={StylesConteudo.rigthHeader}>
             <Image
-              source={require("../assets/images/reinoUnido.png")}
-              style={StylesConteudo.ImgIntroduçao}
+              source={require("../assets/images/venezaBackgroundremoveb.png")}
+              style={{
+                height: 280,
+                width: 250,
+                resizeMode: "contain",
+                marginRight: -190,
+                transform: [{ rotate: "350deg" }],
+              }}
             />
           </View>
         </View>
       </View>
       <View style={StylesConteudo.Carossel}>
-        <Text style={StylesConteudo.TxtNomecidade}>Pictures:</Text>
+        <Text style={StylesConteudo.TxtNomecidade}>Fotos:</Text>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           <View style={StylesConteudo.BodyScroll}>
             <Image
               style={StylesConteudo.ImgCarossel}
-              source={require("../assets/images/london.jpg")}
+              source={require("../assets/images/veneza10.jpg")}
             />
             <Image
               style={{
@@ -111,31 +136,31 @@ export default function Veneza() {
                 margin: 10,
                 borderRadius: 20,
               }}
-              source={require("../assets/images/ny8.png")}
+              source={require("../assets/images/veneza.png")}
             />
             <Image
               style={StylesConteudo.ImgCarossel}
-              source={require("../assets/images/newYork.jpg")}
+              source={require("../assets/images/veneza12.jpg")}
             />
             <Image
               style={StylesConteudo.ImgCarossel}
-              source={require("../assets/images/paris.jpg")}
+              source={require("../assets/images/veneza3.jpg")}
             />
             <Image
               style={StylesConteudo.ImgCarossel}
-              source={require("../assets/images/rioDeJaneiro.jpg")}
+              source={require("../assets/images/veneza5.jpg")}
             />
             <Image
               style={StylesConteudo.ImgCarossel}
-              source={require("../assets/images/toquio.jpg")}
+              source={require("../assets/images/veneza14.png")}
             />
             <Image
               style={StylesConteudo.ImgCarossel}
-              source={require("../assets/images/london.jpg")}
+              source={require("../assets/images/veneza7.jpg")}
             />
             <Image
               style={StylesConteudo.ImgCarossel}
-              source={require("../assets/images/ny2.png")}
+              source={require("../assets/images/veneza8.jpg")}
             />
           </View>
         </ScrollView>
@@ -147,7 +172,7 @@ export default function Veneza() {
           style={[StylesConteudo.Tamanhomodal, { height: heightValue }]}
         >
           <ImageBackground
-            source={require("../assets/images/reinoUnidoBackground.jpg")}
+            source={require("../assets/images/venezaponte2.jpg")}
             style={{ width: "100%", height: "100%" }}
           >
             <View style={StylesConteudo.headerModal}>
@@ -166,7 +191,7 @@ export default function Veneza() {
                 <View style={StylesConteudo.Localizaçao}>
                   <FontAwesome5 name="map-pin" size={30} color="#FFFFFF" />
                   <Text style={StylesConteudo.TxtLocalizaçao}>
-                    Catedral de Iorque{"\n"}Iorque, Inglaterra
+                    Ponte de Rialto{"\n"}Veneza, Itália
                   </Text>
                 </View>
                 <View style={StylesConteudo.AlgLocalizaçao}></View>
@@ -181,7 +206,7 @@ export default function Veneza() {
                       size={24}
                       color="#ffffff"
                     />
-                    <Text style={StylesConteudo.TxtLocalizaçao}>21ºC</Text>
+                    <Text style={StylesConteudo.TxtLocalizaçao}>19ºC</Text>
                   </View>
                   <View style={StylesConteudo.AlgInformaçao2}>
                     <Fontisto name="date" size={24} color="#ffffff" />
@@ -191,20 +216,72 @@ export default function Veneza() {
                 <View style={StylesConteudo.TxtIntroduçaocidade}>
                   <Text style={{ color: "#FFFFFF" }}>Descrição</Text>
                   <Text style={{ color: "#FFFFFF" }}>
-                    A Catedral e Igreja Metropolítica de São Pedro em Iorque,
-                    mais conhecida como Catedral de Iorque é a maior catedral de
-                    estilo gótico do norte europeu, localizada na cidade de
-                    Iorque, Inglaterra.
+                    A Ponte de Rialto é a ponte em arco mais antiga e mais
+                    famosa sobre o Grande Canal, na cidade italiana de Veneza.
+                    Ela foi formalmente a única ligação permanente entre os dois
+                    lados do Grande Canal, até abrirem as restantes travessias.
                   </Text>
-                  <TouchableOpacity style={StylesConteudo.BtnPressme}>
-                    <Text style={{ color: "#326e6c88" }}>Press me!</Text>
-                  </TouchableOpacity>
                 </View>
               </View>
             </View>
           </ImageBackground>
         </Animated.View>
       </Modal>
+      <Modal visible={visMap}>
+        <View style={{ flex: 1 }}>
+          {location && (
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: location.latitude,
+                longitude: location.longitude,
+                latitudeDelta: 0.0,
+                longitudeDelta: 0.0,
+                zoom: -20,
+              }}
+              provider={MapView.PROVIDER_GOOGLE} // Use Google Maps
+            >
+              <Marker
+                coordinate={{
+                  latitude: location.latitude,
+                  longitude: location.longitude,
+                }}
+                title={"Você esta aqui"}
+                pinColor="blue" // Cor azul para destacar a localização atual
+              />
+              {locations.map((loc, index) => (
+                <Marker
+                  key={index}
+                  coordinate={{
+                    latitude: loc.latitude,
+                    longitude: loc.longitude,
+                  }}
+                  title={loc.title}
+                  description={loc.description}
+                />
+              ))}
+            </MapView>
+          )}
+
+          <TouchableOpacity
+            style={[StylesConteudo.btnVoltar, { marginTop: 50 }]}
+            onPress={() => setVisMap(false)}
+          >
+            <FontAwesome name="arrow-left" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+});

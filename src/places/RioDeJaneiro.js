@@ -9,7 +9,12 @@ import {
   StatusBar,
   Animated,
   Dimensions,
+  StyleSheet,
 } from "react-native";
+
+import MapView, { Marker } from "react-native-maps";
+
+import * as Location from "expo-location";
 
 // Imports icons
 import { FontAwesome } from "@expo/vector-icons";
@@ -25,11 +30,17 @@ import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
 
 // Import Hook USESTATE
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { StylesConteudo } from "../styles/StylesConteudo";
 
 //
 const { height: DEVICE_HEIGHT } = Dimensions.get("window");
+
+const locations = [
+  { latitude: -22.908333, longitude: -43.196388, title: "Rio de Janeiro" },
+
+  // Adicione mais localizações conforme necessário
+];
 
 export default function RioDeJaneiro() {
   const [vis, setVis] = useState(false);
@@ -41,6 +52,21 @@ export default function RioDeJaneiro() {
     "Caveat-VariableFont_wght": require("../assets/fonts/Caveat-VariableFont_wght.ttf"),
     "Pacifico-Regular": require("../assets/fonts/Pacifico-Regular.ttf"),
   });
+  const [visMap, setVisMap] = useState(false);
+
+  const [location, setLocation] = React.useState(null);
+  React.useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location.coords);
+    })();
+  }, []);
 
   useEffect(() => {
     if (vis) {
@@ -68,7 +94,7 @@ export default function RioDeJaneiro() {
           </TouchableOpacity>
           <TouchableOpacity
             style={StylesConteudo.btnMaps}
-            onPress={() => alert("MAPS")}
+            onPress={() => setVisMap(true)}
           >
             <Fontisto name="world" size={24} color="white" />
           </TouchableOpacity>
@@ -76,12 +102,11 @@ export default function RioDeJaneiro() {
 
         <View style={StylesConteudo.header}>
           <View style={StylesConteudo.leftHeader}>
-            <Text style={StylesConteudo.TxtNomecidade}>
-              the {"\n"}Rio de Janeiro
-            </Text>
+            <Text style={StylesConteudo.TxtNomecidade}>Rio de Janeiro</Text>
             <Text style={StylesConteudo.TxtIntroduçaocidade}>
-              Londres, a capital do Reino Unido, é uma das cidades mais
-              vibrantes e culturalmente ricas do mundo.
+              Cidade tropical e vibrante com belas vistas naturais conhecida
+              como retrato nacional, internacionalmente famosa por suas
+              paisagens culturais e paisagísticos.
             </Text>
             <TouchableOpacity
               style={StylesConteudo.btnMore}
@@ -99,7 +124,7 @@ export default function RioDeJaneiro() {
         </View>
       </View>
       <View style={StylesConteudo.Carossel}>
-        <Text style={StylesConteudo.TxtNomecidade}>Pictures:</Text>
+        <Text style={StylesConteudo.TxtNomecidade}>Fotos:</Text>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           <View style={StylesConteudo.BodyScroll}>
             <Image
@@ -168,7 +193,7 @@ export default function RioDeJaneiro() {
                 <View style={StylesConteudo.Localizaçao}>
                   <FontAwesome5 name="map-pin" size={30} color="#FFFFFF" />
                   <Text style={StylesConteudo.TxtLocalizaçao}>
-                    Catedral de Iorque{"\n"}Iorque, Inglaterra
+                    Cristo Redentor{"\n"}Rio De Janeiro, Rio de Janeiro
                   </Text>
                 </View>
                 <View style={StylesConteudo.AlgLocalizaçao}></View>
@@ -193,20 +218,73 @@ export default function RioDeJaneiro() {
                 <View style={StylesConteudo.TxtIntroduçaocidade}>
                   <Text style={{ color: "#FFFFFF" }}>Descrição</Text>
                   <Text style={{ color: "#FFFFFF" }}>
-                    A Catedral e Igreja Metropolítica de São Pedro em Iorque,
-                    mais conhecida como Catedral de Iorque é a maior catedral de
-                    estilo gótico do norte europeu, localizada na cidade de
-                    Iorque, Inglaterra.
+                    Cristo Redentor é uma estátua que retrata Jesus Cristo
+                    localizada no topo do morro do Corcovado, a 709 metros acima
+                    do nível do mar. Inaugurado em 1931, levou 5 anos para a
+                    construção. É considerada uma das setes maravilhas do mundo
+                    moderno.
                   </Text>
-                  <TouchableOpacity style={StylesConteudo.BtnPressme}>
-                    <Text style={{ color: "#326e6c88" }}>Press me!</Text>
-                  </TouchableOpacity>
                 </View>
               </View>
             </View>
           </ImageBackground>
         </Animated.View>
       </Modal>
+      <Modal visible={visMap}>
+        <View style={{ flex: 1 }}>
+          {location && (
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: location.latitude,
+                longitude: location.longitude,
+                latitudeDelta: 0.0,
+                longitudeDelta: 0.0,
+                zoom: -20,
+              }}
+              provider={MapView.PROVIDER_GOOGLE} // Use Google Maps
+            >
+              <Marker
+                coordinate={{
+                  latitude: location.latitude,
+                  longitude: location.longitude,
+                }}
+                title={"Você esta aqui"}
+                pinColor="blue" // Cor azul para destacar a localização atual
+              />
+              {locations.map((loc, index) => (
+                <Marker
+                  key={index}
+                  coordinate={{
+                    latitude: loc.latitude,
+                    longitude: loc.longitude,
+                  }}
+                  title={loc.title}
+                  description={loc.description}
+                />
+              ))}
+            </MapView>
+          )}
+
+          <TouchableOpacity
+            style={[StylesConteudo.btnVoltar, { marginTop: 50 }]}
+            onPress={() => setVisMap(false)}
+          >
+            <FontAwesome name="arrow-left" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+});

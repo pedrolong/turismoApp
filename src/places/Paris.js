@@ -9,7 +9,12 @@ import {
   StatusBar,
   Animated,
   Dimensions,
+  StyleSheet,
 } from "react-native";
+
+import MapView, { Marker } from "react-native-maps";
+
+import * as Location from "expo-location";
 
 // Imports icons
 import { FontAwesome } from "@expo/vector-icons";
@@ -25,11 +30,17 @@ import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
 
 // Import Hook USESTATE
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { StylesConteudo } from "../styles/StylesConteudo";
 
 //
 const { height: DEVICE_HEIGHT } = Dimensions.get("window");
+
+const locations = [
+  { latitude: 48.8566, longitude: 2.3522, title: "Paris" },
+
+  // Adicione mais localizações conforme necessário
+];
 
 export default function Paris() {
   const [vis, setVis] = useState(false);
@@ -41,6 +52,21 @@ export default function Paris() {
     "Caveat-VariableFont_wght": require("../assets/fonts/Caveat-VariableFont_wght.ttf"),
     "Pacifico-Regular": require("../assets/fonts/Pacifico-Regular.ttf"),
   });
+  const [visMap, setVisMap] = useState(false);
+
+  const [location, setLocation] = React.useState(null);
+  React.useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location.coords);
+    })();
+  }, []);
 
   useEffect(() => {
     if (vis) {
@@ -68,7 +94,7 @@ export default function Paris() {
           </TouchableOpacity>
           <TouchableOpacity
             style={StylesConteudo.btnMaps}
-            onPress={() => alert("MAPS")}
+            onPress={() => setVisMap(true)}
           >
             <Fontisto name="world" size={24} color="white" />
           </TouchableOpacity>
@@ -76,10 +102,11 @@ export default function Paris() {
 
         <View style={StylesConteudo.header}>
           <View style={StylesConteudo.leftHeader}>
-            <Text style={StylesConteudo.TxtNomecidade}>the {"\n"}Paris</Text>
+            <Text style={StylesConteudo.TxtNomecidade}>Paris</Text>
             <Text style={StylesConteudo.TxtIntroduçaocidade}>
-              Londres, a capital do Reino Unido, é uma das cidades mais
-              vibrantes e culturalmente ricas do mundo.
+              Paris, a capital da França, é uma importante cidade europeia e um
+              centro mundial de arte, moda, gastronomia e cultura. Sua paisagem
+              urbana do século XIX são belíssimas.
             </Text>
             <TouchableOpacity
               style={StylesConteudo.btnMore}
@@ -90,19 +117,19 @@ export default function Paris() {
           </View>
           <View style={StylesConteudo.rigthHeader}>
             <Image
-              source={require("../assets/images/reinoUnido.png")}
-              style={StylesConteudo.ImgIntroduçao}
+              source={require("../assets/icons/IconeParis2.png")}
+              style={{ height: 220, width: 110, left: 80, marginTop: 60 }}
             />
           </View>
         </View>
       </View>
       <View style={StylesConteudo.Carossel}>
-        <Text style={StylesConteudo.TxtNomecidade}>Pictures:</Text>
+        <Text style={StylesConteudo.TxtNomecidade}>Fotos:</Text>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           <View style={StylesConteudo.BodyScroll}>
             <Image
               style={StylesConteudo.ImgCarossel}
-              source={require("../assets/images/london.jpg")}
+              source={require("../assets/images/Paris1.png")}
             />
             <Image
               style={{
@@ -111,31 +138,31 @@ export default function Paris() {
                 margin: 10,
                 borderRadius: 20,
               }}
-              source={require("../assets/images/ny8.png")}
+              source={require("../assets/images/paris2.jpg")}
             />
             <Image
               style={StylesConteudo.ImgCarossel}
-              source={require("../assets/images/newYork.jpg")}
+              source={require("../assets/images/paris3.jpg")}
+            />
+            <Image
+              style={StylesConteudo.ImgCarossel}
+              source={require("../assets/images/paris4.jpg")}
+            />
+            <Image
+              style={StylesConteudo.ImgCarossel}
+              source={require("../assets/images/paris10.jpg")}
+            />
+            <Image
+              style={StylesConteudo.ImgCarossel}
+              source={require("../assets/images/paris6.jpg")}
+            />
+            <Image
+              style={StylesConteudo.ImgCarossel}
+              source={require("../assets/images/paris7.jpg")}
             />
             <Image
               style={StylesConteudo.ImgCarossel}
               source={require("../assets/images/paris.jpg")}
-            />
-            <Image
-              style={StylesConteudo.ImgCarossel}
-              source={require("../assets/images/rioDeJaneiro.jpg")}
-            />
-            <Image
-              style={StylesConteudo.ImgCarossel}
-              source={require("../assets/images/toquio.jpg")}
-            />
-            <Image
-              style={StylesConteudo.ImgCarossel}
-              source={require("../assets/images/london.jpg")}
-            />
-            <Image
-              style={StylesConteudo.ImgCarossel}
-              source={require("../assets/images/ny2.png")}
             />
           </View>
         </ScrollView>
@@ -147,7 +174,7 @@ export default function Paris() {
           style={[StylesConteudo.Tamanhomodal, { height: heightValue }]}
         >
           <ImageBackground
-            source={require("../assets/images/reinoUnidoBackground.jpg")}
+            source={require("../assets/images/parisBackground.jpg")}
             style={{ width: "100%", height: "100%" }}
           >
             <View style={StylesConteudo.headerModal}>
@@ -166,7 +193,7 @@ export default function Paris() {
                 <View style={StylesConteudo.Localizaçao}>
                   <FontAwesome5 name="map-pin" size={30} color="#FFFFFF" />
                   <Text style={StylesConteudo.TxtLocalizaçao}>
-                    Catedral de Iorque{"\n"}Iorque, Inglaterra
+                    Torre Eiffel{"\n"}Paris, França
                   </Text>
                 </View>
                 <View style={StylesConteudo.AlgLocalizaçao}></View>
@@ -181,7 +208,7 @@ export default function Paris() {
                       size={24}
                       color="#ffffff"
                     />
-                    <Text style={StylesConteudo.TxtLocalizaçao}>18ºC</Text>
+                    <Text style={StylesConteudo.TxtLocalizaçao}>19ºC</Text>
                   </View>
                   <View style={StylesConteudo.AlgInformaçao2}>
                     <Fontisto name="date" size={24} color="#ffffff" />
@@ -191,20 +218,73 @@ export default function Paris() {
                 <View style={StylesConteudo.TxtIntroduçaocidade}>
                   <Text style={{ color: "#FFFFFF" }}>Descrição</Text>
                   <Text style={{ color: "#FFFFFF" }}>
-                    A Catedral e Igreja Metropolítica de São Pedro em Iorque,
-                    mais conhecida como Catedral de Iorque é a maior catedral de
-                    estilo gótico do norte europeu, localizada na cidade de
-                    Iorque, Inglaterra.
+                    A Torre Eiffel é uma torre treliçada de ferro forjado no
+                    Champ de Mars. Tem o nome do engenheiro Gustave Eiffel, cuja
+                    empresa projetou e construiu a torre de 1887 a 1889. Ela tem
+                    300 metros de altura e foi construída para representar os
+                    avanços tecnológicos da França e 100 anos da revolução.
                   </Text>
-                  <TouchableOpacity style={StylesConteudo.BtnPressme}>
-                    <Text style={{ color: "#326e6c88" }}>Press me!</Text>
-                  </TouchableOpacity>
                 </View>
               </View>
             </View>
           </ImageBackground>
         </Animated.View>
       </Modal>
+      <Modal visible={visMap}>
+        <View style={{ flex: 1 }}>
+          {location && (
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: location.latitude,
+                longitude: location.longitude,
+                latitudeDelta: 0.0,
+                longitudeDelta: 0.0,
+                zoom: -20,
+              }}
+              provider={MapView.PROVIDER_GOOGLE} // Use Google Maps
+            >
+              <Marker
+                coordinate={{
+                  latitude: location.latitude,
+                  longitude: location.longitude,
+                }}
+                title={"Você esta aqui"}
+                pinColor="blue" // Cor azul para destacar a localização atual
+              />
+              {locations.map((loc, index) => (
+                <Marker
+                  key={index}
+                  coordinate={{
+                    latitude: loc.latitude,
+                    longitude: loc.longitude,
+                  }}
+                  title={loc.title}
+                  description={loc.description}
+                />
+              ))}
+            </MapView>
+          )}
+
+          <TouchableOpacity
+            style={[StylesConteudo.btnVoltar, { marginTop: 50 }]}
+            onPress={() => setVisMap(false)}
+          >
+            <FontAwesome name="arrow-left" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+});

@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { StylesHome } from "../styles/StylesHome";
 import { styles } from "../styles/Styles";
-
 // Import Carousel
 import Carousel from "react-native-snap-carousel";
 
@@ -24,11 +24,11 @@ const data = [
     iconUrl: require("../assets/icons/londres.png"),
   },
   {
-    imgUrl: require("../assets/images/paris.jpg"),
+    imgUrl: require("../assets/images/pariscapa.png"),
     iconUrl: require("../assets/icons/paris.png"),
   },
   {
-    imgUrl: require("../assets/images/newYork.jpg"),
+    imgUrl: require("../assets/images/novayorkcapa.jpg"),
     iconUrl: require("../assets/icons/newYork.png"),
   },
   {
@@ -39,65 +39,27 @@ const data = [
     imgUrl: require("../assets/images/rioDeJaneiro.jpg"),
     iconUrl: require("../assets/icons/rioDeJaneiro.png"),
   },
+  {
+    imgUrl: require("../assets/images/dubaicapa.jpg"),
+    iconUrl: require("../assets/icons/DubaiIcon.jpeg"),
+  },
+  {
+    imgUrl: require("../assets/images/venezacapa.jpg"),
+    iconUrl: require("../assets/icons/venezaIcon.jpeg"),
+  },
 ];
 function CarouselCardItem({ item, index }) {
   return (
-    <View
-      style={{
-        height: 400, // Define a altura do carousel
-        width: "100%", // Define a largura do carousel
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 30, // Indica o espaço acima do elemento
-      }}
-    >
-      <View
-        style={{
-          height: 350,
-          width: 300,
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: 30, // Define o espaço acima do elemneto
-          shadowColor: "#326e6c", // Define a cor da sombra
-          shadowOffset: {
-            // Define o deslocamento da sombra
-            width: 0,
-            height: 0,
-          },
-          shadowOpacity: 0.58, // Define a opacidade da sombra
-          shadowRadius: 16.0, // Define o raio de desfocagem da sombra
-          elevation: 24, // Adiciona uma sombra projetada ao item
-          borderRadius: 30, // Deixa a borda arredondada
-          backgroundColor: "white", // Define a cor de fundo
-          overflow: "hidden", // Especifica quando o conteúdo de um elemento de nível de bloco deve ser cortado
-        }}
-      >
+    <View style={StylesHome.imgcarosel}>
+      <View style={StylesHome.Carosel}>
         <ImageBackground
           source={item.imgUrl} // Style da imagem de fundo
-          style={{
-            width: "100%",
-            height: "100%",
-            borderRadius: 30,
-            alignItems: "flex-end",
-          }}
+          style={StylesHome.imgcarosel2}
         >
           <TouchableOpacity // Style do botão
-            style={{
-              backgroundColor: "white",
-              width: 50,
-              height: 50,
-              borderRadius: 100,
-              justifyContent: "center",
-              alignItems: "center",
-              overflow: "hidden", // Faz com que as visualizações sejam cortadas
-              marginTop: 5, // Define o espaço acima do botão
-              marginRight: 10,
-            }}
+            style={StylesHome.btnicone}
           >
-            <Image
-              source={item.iconUrl}
-              style={{ width: 30, height: 30 }} // Imagem ultilizada dentro do botão
-            />
+            <Image source={item.iconUrl} style={StylesHome.imgicone} />
           </TouchableOpacity>
         </ImageBackground>
       </View>
@@ -126,90 +88,23 @@ export default function Home() {
         <View
           style={styles.header} // Style do cabeçalho
         >
-          <Text
-            style={{
-              fontFamily: "PoetsenOne-Regular",
-              fontSize: 30, // Define o tamanho da fonte ultilizada
-              marginLeft: 20, // Define o espaço entre a borda esquerda de um elemento e seu entorno
-            }}
-          >
-            Explore Places
-          </Text>
+          <Text style={StylesHome.txtexplore}>Conheça Lugares</Text>
         </View>
         <View style={styles.viewButtons}>
-          <TouchableOpacity
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: "CormorantGaramond-Light",
-                color: "#326e6c",
-                fontSize: 18,
-              }}
-            >
-              Sights
-            </Text>
-            <View
-              style={{
-                width: 10,
-                height: 10,
-                borderRadius: 10,
-                backgroundColor: "#326e6c",
-                marginTop: 5,
-              }}
-            ></View>
+          <TouchableOpacity style={StylesHome.btnsights}>
+            <Text style={StylesHome.txtlocais}>Locais </Text>
+            <View style={StylesHome.bolinhalocais}></View>
           </TouchableOpacity>
           <TouchableOpacity>
-            <Text
-              style={{
-                fontFamily: "CormorantGaramond-Light",
-                color: "black",
-                fontSize: 18,
-              }}
-            >
-              Tours
-            </Text>
-            <View
-              style={{
-                width: 10,
-                height: 10,
-                borderRadius: 10,
-                backgroundColor: "white",
-                marginTop: 5,
-              }}
-            ></View>
+            <Text style={StylesHome.txttours}>Passeios</Text>
+            <View style={StylesHome.bolinhatours}></View>
           </TouchableOpacity>
           <TouchableOpacity>
-            <Text
-              style={{
-                fontFamily: "CormorantGaramond-Light",
-                color: "black",
-                fontSize: 18,
-              }}
-            >
-              Adventures
-            </Text>
-            <View
-              style={{
-                width: 10,
-                height: 10,
-                borderRadius: 10,
-                backgroundColor: "white",
-                marginTop: 5,
-              }}
-            ></View>
+            <Text style={StylesHome.txtadventures}>Aventuras</Text>
+            <View style={StylesHome.bolinhaadventures}></View>
           </TouchableOpacity>
         </View>
-        <View
-          style={{
-            height: 500,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <View style={StylesHome.alturabtnscidades}>
           <Carousel
             data={data}
             renderItem={CarouselCardItem}
@@ -223,438 +118,123 @@ export default function Home() {
           />
         </View>
         <View>
-          <Text
-            style={{
-              marginLeft: 20,
-              fontSize: 20,
-              fontFamily: "PoetsenOne-Regular",
-            }}
-          >
-            Popular
-          </Text>
+          <Text style={StylesHome.txtpopular}>Popular</Text>
         </View>
-        <View
-          style={{
-            width: "100%",
-            height: 600,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <View style={StylesHome.alinhamentobtncidades}>
           <TouchableOpacity onPress={() => navigation.navigate("Londres")}>
-            <View
-              style={{
-                width: "90%",
-                height: 100,
-                marginBottom: 10,
-                backgroundColor: "red",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "white",
-
-                flexDirection: "row",
-
-                shadowColor: "#326e6c",
-                shadowOffset: {
-                  width: 0,
-                  height: 8,
-                },
-                shadowOpacity: 0.59171875,
-                shadowRadius: 8,
-                elevation: 12,
-
-                borderRadius: 20,
-              }}
-            >
-              <View
-                style={{
-                  width: "30%",
-                  height: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+            <View style={StylesHome.botoescidades}>
+              <View style={StylesHome.imgbtncidades}>
                 <Image
                   source={require("../assets/images/london.jpg")}
-                  style={{
-                    height: "80%",
-                    width: "80%",
-                    borderRadius: 20,
-                    resizeMode: "cover",
-                  }}
+                  style={StylesHome.imgbtncidades2}
                 />
               </View>
-              <View
-                style={{
-                  width: "70%",
-                  height: "100%",
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                }}
-              >
-                <Text style={{ fontFamily: "PoetsenOne-Regular" }}>
-                  Londres
-                </Text>
-                <Text style={{ fontFamily: "CormorantGaramond-Light" }}>
+              <View style={StylesHome.designtxtcidades}>
+                <Text style={StylesHome.nomecidade}>Londres</Text>
+                <Text style={StylesHome.descricaocidades}>
                   Histórica, Diversa, Vibrante.
                 </Text>
               </View>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate("Paris")}>
-            <View
-              style={{
-                width: "90%",
-                height: 100,
-                marginBottom: 10,
-                backgroundColor: "red",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "white",
-
-                flexDirection: "row",
-
-                shadowColor: "#326e6c",
-                shadowOffset: {
-                  width: 0,
-                  height: 8,
-                },
-                shadowOpacity: 0.59171875,
-                shadowRadius: 8,
-                elevation: 12,
-
-                borderRadius: 20,
-              }}
-            >
-              <View
-                style={{
-                  width: "30%",
-                  height: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+            <View style={StylesHome.botoescidades}>
+              <View style={StylesHome.imgbtncidades}>
                 <Image
-                  source={require("../assets/images/paris.jpg")}
-                  style={{
-                    height: "80%",
-                    width: "80%",
-                    borderRadius: 20,
-                    resizeMode: "cover",
-                  }}
+                  source={require("../assets/images/pariscapa.png")}
+                  style={StylesHome.imgbtncidades2}
                 />
               </View>
-              <View
-                style={{
-                  width: "70%",
-                  height: "100%",
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                }}
-              >
-                <Text style={{ fontFamily: "PoetsenOne-Regular" }}>Paris</Text>
-                <Text style={{ fontFamily: "CormorantGaramond-Light" }}>
+              <View style={StylesHome.designtxtcidades}>
+                <Text style={StylesHome.nomecidade}>Paris</Text>
+                <Text style={StylesHome.descricaocidades}>
                   Romântica, Encantadora, Cultural.
                 </Text>
               </View>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate("NewYork")}>
-            <View
-              style={{
-                width: "90%",
-                height: 100,
-                marginBottom: 10,
-                backgroundColor: "red",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "white",
-
-                flexDirection: "row",
-
-                shadowColor: "#326e6c",
-                shadowOffset: {
-                  width: 0,
-                  height: 8,
-                },
-                shadowOpacity: 0.59171875,
-                shadowRadius: 8,
-                elevation: 12,
-
-                borderRadius: 20,
-              }}
-            >
-              <View
-                style={{
-                  width: "30%",
-                  height: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+            <View style={StylesHome.botoescidades}>
+              <View style={StylesHome.imgbtncidades}>
                 <Image
-                  source={require("../assets/images/newYork.jpg")}
-                  style={{
-                    height: "80%",
-                    width: "80%",
-                    borderRadius: 20,
-                    resizeMode: "cover",
-                  }}
+                  source={require("../assets/images/novayorkcapa.jpg")}
+                  style={StylesHome.imgbtncidades2}
                 />
               </View>
-              <View
-                style={{
-                  width: "70%",
-                  height: "100%",
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                }}
-              >
-                <Text style={{ fontFamily: "PoetsenOne-Regular" }}>
-                  Nova York
-                </Text>
-                <Text style={{ fontFamily: "CormorantGaramond-Light" }}>
+              <View style={StylesHome.designtxtcidades}>
+                <Text style={StylesHome.nomecidade}>Nova York</Text>
+                <Text style={StylesHome.descricaocidades}>
                   Cosmopolita, Energética, Inspiradora.
                 </Text>
               </View>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate("Toquio")}>
-            <View
-              style={{
-                width: "90%",
-                height: 100,
-                marginBottom: 10,
-                backgroundColor: "red",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "white",
-
-                flexDirection: "row",
-
-                shadowColor: "#326e6c",
-                shadowOffset: {
-                  width: 0,
-                  height: 8,
-                },
-                shadowOpacity: 0.59171875,
-                shadowRadius: 8,
-                elevation: 12,
-
-                borderRadius: 20,
-              }}
-            >
-              <View
-                style={{
-                  width: "30%",
-                  height: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+            <View style={StylesHome.botoescidades}>
+              <View style={StylesHome.imgbtncidades}>
                 <Image
                   source={require("../assets/images/toquio.jpg")}
-                  style={{
-                    height: "80%",
-                    width: "80%",
-                    borderRadius: 20,
-                    resizeMode: "cover",
-                  }}
+                  style={StylesHome.imgbtncidades2}
                 />
               </View>
-              <View
-                style={{
-                  width: "70%",
-                  height: "100%",
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                }}
-              >
-                <Text style={{ fontFamily: "PoetsenOne-Regular" }}>Tóquio</Text>
-                <Text style={{ fontFamily: "CormorantGaramond-Light" }}>
+              <View style={StylesHome.designtxtcidades}>
+                <Text style={StylesHome.nomecidade}>Tóquio</Text>
+                <Text style={StylesHome.descricaocidades}>
                   Futurística, Efervescente, Tradicional.
                 </Text>
               </View>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate("RioDeJaneiro")}>
-            <View
-              style={{
-                width: "90%",
-                height: 100,
-                marginBottom: 10,
-                backgroundColor: "red",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "white",
-
-                flexDirection: "row",
-
-                shadowColor: "#326e6c",
-                shadowOffset: {
-                  width: 0,
-                  height: 8,
-                },
-                shadowOpacity: 0.59171875,
-                shadowRadius: 8,
-                elevation: 12,
-
-                borderRadius: 20,
-              }}
-            >
-              <View
-                style={{
-                  width: "30%",
-                  height: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+            <View style={StylesHome.botoescidades}>
+              <View style={StylesHome.imgbtncidades}>
                 <Image
                   source={require("../assets/images/rioDeJaneiro.jpg")}
-                  style={{
-                    height: "80%",
-                    width: "80%",
-                    borderRadius: 20,
-                    resizeMode: "cover",
-                  }}
+                  style={StylesHome.imgbtncidades2}
                 />
               </View>
-              <View
-                style={{
-                  width: "70%",
-                  height: "100%",
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                }}
-              >
-                <Text style={{ fontFamily: "PoetsenOne-Regular" }}>
-                  Rio de Janeiro
-                </Text>
-                <Text style={{ fontFamily: "CormorantGaramond-Light" }}>
+              <View style={StylesHome.designtxtcidades}>
+                <Text style={StylesHome.nomecidade}>Rio de Janeiro</Text>
+                <Text style={StylesHome.descricaocidades}>
                   Exuberante, Vibrante, Tropical.
                 </Text>
               </View>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate("Dubai")}>
-            <View
-              style={{
-                width: "90%",
-                height: 100,
-                marginBottom: 10,
-                backgroundColor: "red",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "white",
-
-                flexDirection: "row",
-
-                shadowColor: "#326e6c",
-                shadowOffset: {
-                  width: 0,
-                  height: 8,
-                },
-                shadowOpacity: 0.59171875,
-                shadowRadius: 8,
-                elevation: 12,
-
-                borderRadius: 20,
-              }}
-            >
-              <View
-                style={{
-                  width: "30%",
-                  height: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+            <View style={StylesHome.botoescidades}>
+              <View style={StylesHome.imgbtncidades}>
                 <Image
-                  source={require("../assets/images/newYork.jpg")}
-                  style={{
-                    height: "80%",
-                    width: "80%",
-                    borderRadius: 20,
-                    resizeMode: "cover",
-                  }}
+                  source={require("../assets/images/dubaicapa.jpg")}
+                  style={StylesHome.imgbtncidades2}
                 />
               </View>
-              <View
-                style={{
-                  width: "70%",
-                  height: "100%",
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                }}
-              >
-                <Text style={{ fontFamily: "PoetsenOne-Regular" }}>Dubai</Text>
-                <Text style={{ fontFamily: "CormorantGaramond-Light" }}>
-                  Cosmopolita, Energética, Inspiradora.
+              <View style={StylesHome.designtxtcidades}>
+                <Text style={StylesHome.nomecidade}>Dubai</Text>
+                <Text style={StylesHome.descricaocidades}>
+                  Moderna, Exuberante, Luxuosa.
                 </Text>
               </View>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate("Veneza")}>
-            <View
-              style={{
-                width: "90%",
-                height: 100,
-                marginBottom: 10,
-                backgroundColor: "red",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "white",
-
-                flexDirection: "row",
-
-                shadowColor: "#326e6c",
-                shadowOffset: {
-                  width: 0,
-                  height: 8,
-                },
-                shadowOpacity: 0.59171875,
-                shadowRadius: 8,
-                elevation: 12,
-
-                borderRadius: 20,
-              }}
-            >
-              <View
-                style={{
-                  width: "30%",
-                  height: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+            <View style={StylesHome.botoescidades}>
+              <View style={StylesHome.imgbtncidades}>
                 <Image
-                  source={require("../assets/images/newYork.jpg")}
-                  style={{
-                    height: "80%",
-                    width: "80%",
-                    borderRadius: 20,
-                    resizeMode: "cover",
-                  }}
+                  source={require("../assets/images/venezacapa.jpg")}
+                  style={StylesHome.imgbtncidades2}
                 />
               </View>
-              <View
-                style={{
-                  width: "70%",
-                  height: "100%",
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                }}
-              >
-                <Text style={{ fontFamily: "PoetsenOne-Regular" }}>Veneza</Text>
-                <Text style={{ fontFamily: "CormorantGaramond-Light" }}>
-                  Cosmopolita, Energética, Inspiradora.
+              <View style={StylesHome.designtxtcidades}>
+                <Text style={StylesHome.nomecidade}>Veneza</Text>
+                <Text style={StylesHome.descricaocidades}>
+                  Tradicional, Romântica, Inspiradora.
                 </Text>
               </View>
             </View>
           </TouchableOpacity>
         </View>
-        <View style={{ height: 100 }}></View>
+        <View style={StylesHome.finaldapagina}></View>
       </ScrollView>
     </View>
   );

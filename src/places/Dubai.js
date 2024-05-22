@@ -9,7 +9,12 @@ import {
   StatusBar,
   Animated,
   Dimensions,
+  StyleSheet,
 } from "react-native";
+
+import MapView, { Marker } from "react-native-maps";
+
+import * as Location from "expo-location";
 
 // Imports icons
 import { FontAwesome } from "@expo/vector-icons";
@@ -25,11 +30,21 @@ import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
 
 // Import Hook USESTATE
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { StylesConteudo } from "../styles/StylesConteudo";
 
 //
 const { height: DEVICE_HEIGHT } = Dimensions.get("window");
+
+const locations = [
+  {
+    latitude: 25.276987,
+    longitude: 55.296249,
+    title: "Dubai",
+  },
+
+  // Adicione mais localizações conforme necessário
+];
 
 export default function Dubai() {
   const [vis, setVis] = useState(false);
@@ -41,6 +56,21 @@ export default function Dubai() {
     "Caveat-VariableFont_wght": require("../assets/fonts/Caveat-VariableFont_wght.ttf"),
     "Pacifico-Regular": require("../assets/fonts/Pacifico-Regular.ttf"),
   });
+  const [visMap, setVisMap] = useState(false);
+
+  const [location, setLocation] = React.useState(null);
+  React.useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location.coords);
+    })();
+  }, []);
 
   useEffect(() => {
     if (vis) {
@@ -68,7 +98,7 @@ export default function Dubai() {
           </TouchableOpacity>
           <TouchableOpacity
             style={StylesConteudo.btnMaps}
-            onPress={() => alert("MAPS")}
+            onPress={() => setVisMap(true)}
           >
             <Fontisto name="world" size={24} color="white" />
           </TouchableOpacity>
@@ -76,28 +106,35 @@ export default function Dubai() {
 
         <View style={StylesConteudo.header}>
           <View style={StylesConteudo.leftHeader}>
-            <Text style={StylesConteudo.TxtNomecidade}>the {"\n"}Dubai</Text>
+            <Text style={StylesConteudo.TxtNomecidade}>Dubai</Text>
             <Text style={StylesConteudo.TxtIntroduçaocidade}>
-              Londres, a capital do Reino Unido, é uma das cidades mais
-              vibrantes e culturalmente ricas do mundo.
+              Dubai é uma cidade e um emirado dos Emirados Árabes Unidos
+              conhecida pelos shoppings de luxo, pela arquitetura ultramoderna e
+              pela animada vida noturna.
             </Text>
             <TouchableOpacity
               style={StylesConteudo.btnMore}
               onPress={() => setVis(true)}
             >
-              <Text style={StylesConteudo.TxtbtnMore}>MORE</Text>
+              <Text style={StylesConteudo.TxtbtnMore}>MAIS</Text>
             </TouchableOpacity>
           </View>
           <View style={StylesConteudo.rigthHeader}>
             <Image
-              source={require("../assets/images/reinoUnido.png")}
-              style={StylesConteudo.ImgIntroduçao}
+              source={require("../assets/images/dubaiIcon3.png")}
+              style={{
+                height: 280,
+                width: 250,
+                resizeMode: "contain",
+                marginRight: -150,
+                transform: [{ rotate: "0deg" }],
+              }}
             />
           </View>
         </View>
       </View>
       <View style={StylesConteudo.Carossel}>
-        <Text style={StylesConteudo.TxtNomecidade}>Pictures:</Text>
+        <Text style={StylesConteudo.TxtNomecidade}>Fotos:</Text>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           <View style={StylesConteudo.BodyScroll}>
             <Image
@@ -119,23 +156,23 @@ export default function Dubai() {
             />
             <Image
               style={StylesConteudo.ImgCarossel}
-              source={require("../assets/images/paris.jpg")}
+              source={require("../assets/images/dubai4.jpg")}
             />
             <Image
               style={StylesConteudo.ImgCarossel}
-              source={require("../assets/images/rioDeJaneiro.jpg")}
+              source={require("../assets/images/dubai5.jpg")}
             />
             <Image
               style={StylesConteudo.ImgCarossel}
-              source={require("../assets/images/toquio.jpg")}
+              source={require("../assets/images/dubai6.jpg")}
             />
             <Image
               style={StylesConteudo.ImgCarossel}
-              source={require("../assets/images/london.jpg")}
+              source={require("../assets/images/dubai7.jpg")}
             />
             <Image
               style={StylesConteudo.ImgCarossel}
-              source={require("../assets/images/ny2.png")}
+              source={require("../assets/images/dubai8.jpg")}
             />
           </View>
         </ScrollView>
@@ -147,7 +184,7 @@ export default function Dubai() {
           style={[StylesConteudo.Tamanhomodal, { height: heightValue }]}
         >
           <ImageBackground
-            source={require("../assets/images/reinoUnidoBackground.jpg")}
+            source={require("../assets/images/dubaiBackground2.jpg")}
             style={{ width: "100%", height: "100%" }}
           >
             <View style={StylesConteudo.headerModal}>
@@ -197,15 +234,66 @@ export default function Dubai() {
                     consequentemente, o maior arranha-céu já construído pelo ser
                     humano, com 828 metros de altura e 160 andares.
                   </Text>
-                  <TouchableOpacity style={StylesConteudo.BtnPressme}>
-                    <Text style={{ color: "#326e6c88" }}>Press me!</Text>
-                  </TouchableOpacity>
                 </View>
               </View>
             </View>
           </ImageBackground>
         </Animated.View>
       </Modal>
+      <Modal visible={visMap}>
+        <View style={{ flex: 1 }}>
+          {location && (
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: location.latitude,
+                longitude: location.longitude,
+                latitudeDelta: 0.0,
+                longitudeDelta: 0.0,
+                zoom: -20,
+              }}
+              provider={MapView.PROVIDER_GOOGLE} // Use Google Maps
+            >
+              <Marker
+                coordinate={{
+                  latitude: location.latitude,
+                  longitude: location.longitude,
+                }}
+                title={"Você esta aqui"}
+                pinColor="blue" // Cor azul para destacar a localização atual
+              />
+              {locations.map((loc, index) => (
+                <Marker
+                  key={index}
+                  coordinate={{
+                    latitude: loc.latitude,
+                    longitude: loc.longitude,
+                  }}
+                  title={loc.title}
+                  description={loc.description}
+                />
+              ))}
+            </MapView>
+          )}
+
+          <TouchableOpacity
+            style={[StylesConteudo.btnVoltar, { marginTop: 50 }]}
+            onPress={() => setVisMap(false)}
+          >
+            <FontAwesome name="arrow-left" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+});

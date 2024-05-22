@@ -9,7 +9,12 @@ import {
   StatusBar,
   Animated,
   Dimensions,
+  StyleSheet,
 } from "react-native";
+
+import MapView, { Marker } from "react-native-maps";
+
+import * as Location from "expo-location";
 
 // Imports icons
 import { FontAwesome } from "@expo/vector-icons";
@@ -25,11 +30,21 @@ import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
 
 // Import Hook USESTATE
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { StylesConteudo } from "../styles/StylesConteudo";
 
 //
 const { height: DEVICE_HEIGHT } = Dimensions.get("window");
+
+const locations = [
+  {
+    latitude: 40.7128,
+    longitude: -74.006,
+    title: "Nova York",
+  },
+
+  // Adicione mais localizações conforme necessário
+];
 
 export default function NewYork() {
   const [vis, setVis] = useState(false);
@@ -41,6 +56,21 @@ export default function NewYork() {
     "Caveat-VariableFont_wght": require("../assets/fonts/Caveat-VariableFont_wght.ttf"),
     "Pacifico-Regular": require("../assets/fonts/Pacifico-Regular.ttf"),
   });
+  const [visMap, setVisMap] = useState(false);
+
+  const [location, setLocation] = React.useState(null);
+  React.useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location.coords);
+    })();
+  }, []);
 
   useEffect(() => {
     if (vis) {
@@ -68,7 +98,7 @@ export default function NewYork() {
           </TouchableOpacity>
           <TouchableOpacity
             style={StylesConteudo.btnMaps}
-            onPress={() => alert("MAPS")}
+            onPress={() => setVisMap(true)}
           >
             <Fontisto name="world" size={24} color="white" />
           </TouchableOpacity>
@@ -76,7 +106,7 @@ export default function NewYork() {
 
         <View style={StylesConteudo.header}>
           <View style={StylesConteudo.leftHeader}>
-            <Text style={StylesConteudo.TxtNomecidade}>the {"\n"}New York</Text>
+            <Text style={StylesConteudo.TxtNomecidade}>New York</Text>
             <Text style={StylesConteudo.TxtIntroduçaocidade}>
               New York a cidade mais populosa dos Estados Unidos, com vários
               pontos turísticos recebe milhares de turistas e conhecida por sua
@@ -98,7 +128,7 @@ export default function NewYork() {
         </View>
       </View>
       <View style={StylesConteudo.Carossel}>
-        <Text style={StylesConteudo.TxtNomecidade}>Pictures:</Text>
+        <Text style={StylesConteudo.TxtNomecidade}>Fotos:</Text>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           <View style={StylesConteudo.BodyScroll}>
             <Image
@@ -199,15 +229,67 @@ export default function NewYork() {
                     Libertas. Na mão direita, a deusa segura a Declaração da
                     Independência dos Estados Unidos.
                   </Text>
-                  <TouchableOpacity style={StylesConteudo.BtnPressme}>
-                    <Text style={{ color: "#326e6c88" }}>Press me!</Text>
-                  </TouchableOpacity>
                 </View>
               </View>
             </View>
           </ImageBackground>
         </Animated.View>
       </Modal>
+      <Modal visible={visMap}>
+        <View style={{ flex: 1 }}>
+          {location && (
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: location.latitude,
+                longitude: location.longitude,
+                latitudeDelta: 0.0,
+                longitudeDelta: 0.0,
+                zoom: -20,
+              }}
+              provider={MapView.PROVIDER_GOOGLE} // Use Google Maps
+            >
+              <Marker
+                coordinate={{
+                  latitude: location.latitude,
+                  longitude: location.longitude,
+                }}
+                title={"Você esta aqui"}
+                pinColor="blue" // Cor azul para destacar a localização atual
+              />
+              {locations.map((loc, index) => (
+                <Marker
+                  key={index}
+                  coordinate={{
+                    latitude: loc.latitude,
+                    longitude: loc.longitude,
+                  }}
+                  title={loc.title}
+                  description={loc.description}
+                />
+              ))}
+            </MapView>
+          )}
+
+          <TouchableOpacity
+            style={[StylesConteudo.btnVoltar, { marginTop: 50 }]}
+            onPress={() => setVisMap(false)}
+          >
+            <FontAwesome name="arrow-left" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+});

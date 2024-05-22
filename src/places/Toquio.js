@@ -9,8 +9,12 @@ import {
   StatusBar,
   Animated,
   Dimensions,
+  StyleSheet,
 } from "react-native";
 
+import MapView, { Marker } from "react-native-maps";
+
+import * as Location from "expo-location";
 // Imports icons
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -25,16 +29,26 @@ import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
 
 // Import Hook USESTATE
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { StylesConteudo } from "../styles/StylesConteudo";
 
 //
 const { height: DEVICE_HEIGHT } = Dimensions.get("window");
 
+const locations = [
+  {
+    latitude: 35.6895,
+    longitude: 139.6917,
+    title: "Tóquio",
+  },
+
+  // Adicione mais localizações conforme necessário
+];
+
 export default function Toquio() {
   const [vis, setVis] = useState(false);
   const [heightValue] = useState(new Animated.Value(0));
-
+  const [visMap, setVisMap] = useState(false);
   const navigation = useNavigation();
   const [fontsLoaded] = useFonts({
     "CormorantGaramond-Light": require("../assets/fonts/CormorantGaramond-Light.ttf"),
@@ -42,6 +56,20 @@ export default function Toquio() {
     "Pacifico-Regular": require("../assets/fonts/Pacifico-Regular.ttf"),
   });
 
+  const [location, setLocation] = React.useState(null);
+
+  React.useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location.coords);
+    })();
+  }, []);
   useEffect(() => {
     if (vis) {
       Animated.timing(heightValue, {
@@ -68,7 +96,7 @@ export default function Toquio() {
           </TouchableOpacity>
           <TouchableOpacity
             style={StylesConteudo.btnMaps}
-            onPress={() => alert("MAPS")}
+            onPress={() => setVisMap(true)}
           >
             <Fontisto name="world" size={24} color="white" />
           </TouchableOpacity>
@@ -76,10 +104,11 @@ export default function Toquio() {
 
         <View style={StylesConteudo.header}>
           <View style={StylesConteudo.leftHeader}>
-            <Text style={StylesConteudo.TxtNomecidade}>the {"\n"}Tóquio</Text>
+            <Text style={StylesConteudo.TxtNomecidade}>Tóquio</Text>
             <Text style={StylesConteudo.TxtIntroduçaocidade}>
-              Londres, a capital do Reino Unido, é uma das cidades mais
-              vibrantes e culturalmente ricas do mundo.
+              Capital agitada do Japão, combina o estilo ultramoderno com o
+              tradicional, desde arranha-céus iluminados por neon a templos
+              históricos.
             </Text>
             <TouchableOpacity
               style={StylesConteudo.btnMore}
@@ -90,14 +119,19 @@ export default function Toquio() {
           </View>
           <View style={StylesConteudo.rigthHeader}>
             <Image
-              source={require("../assets/images/toquio1.png")}
-              style={StylesConteudo.ImgIntroduçao}
+              source={require("../assets/images/tokyoIcon2.png")}
+              style={{
+                transform: [{ rotate: "0deg" }],
+                width: 200,
+                height: 200,
+                left: 75,
+              }}
             />
           </View>
         </View>
       </View>
       <View style={StylesConteudo.Carossel}>
-        <Text style={StylesConteudo.TxtNomecidade}>Pictures:</Text>
+        <Text style={StylesConteudo.TxtNomecidade}>Fotos:</Text>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           <View style={StylesConteudo.BodyScroll}>
             <Image
@@ -119,7 +153,7 @@ export default function Toquio() {
             />
             <Image
               style={StylesConteudo.ImgCarossel}
-              source={require("../assets/images/toquio4.jpeg")}
+              source={require("../assets/images/toquio9.jpg")}
             />
             <Image
               style={StylesConteudo.ImgCarossel}
@@ -147,7 +181,7 @@ export default function Toquio() {
           style={[StylesConteudo.Tamanhomodal, { height: heightValue }]}
         >
           <ImageBackground
-            source={require("../assets/images/toquio.jpg")}
+            source={require("../assets/images/toquiobackground.jpg")}
             style={{ width: "100%", height: "100%" }}
           >
             <View style={StylesConteudo.headerModal}>
@@ -166,7 +200,7 @@ export default function Toquio() {
                 <View style={StylesConteudo.Localizaçao}>
                   <FontAwesome5 name="map-pin" size={30} color="#FFFFFF" />
                   <Text style={StylesConteudo.TxtLocalizaçao}>
-                    Catedral de Iorque{"\n"}Iorque, Inglaterra
+                    Tokyo Skytree{"\n"}Toquio, Japão
                   </Text>
                 </View>
                 <View style={StylesConteudo.AlgLocalizaçao}></View>
@@ -181,7 +215,7 @@ export default function Toquio() {
                       size={24}
                       color="#ffffff"
                     />
-                    <Text style={StylesConteudo.TxtLocalizaçao}>ºC</Text>
+                    <Text style={StylesConteudo.TxtLocalizaçao}>20ºC</Text>
                   </View>
                   <View style={StylesConteudo.AlgInformaçao2}>
                     <Fontisto name="date" size={24} color="#ffffff" />
@@ -191,20 +225,71 @@ export default function Toquio() {
                 <View style={StylesConteudo.TxtIntroduçaocidade}>
                   <Text style={{ color: "#FFFFFF" }}>Descrição</Text>
                   <Text style={{ color: "#FFFFFF" }}>
-                    A Catedral e Igreja Metropolítica de São Pedro em Iorque,
-                    mais conhecida como Catedral de Iorque é a maior catedral de
-                    estilo gótico do norte europeu, localizada na cidade de
-                    Iorque, Inglaterra.
+                    A Tokyo Skytree é uma torre de radiodifusão, usada como
+                    canal de televisão, restaurante e ponto turístico. Possuí
+                    634 metros de altura, tornando-se a mais alta estrutura do
+                    Japão e segunda maior do mundo.
                   </Text>
-                  <TouchableOpacity style={StylesConteudo.BtnPressme}>
-                    <Text style={{ color: "#326e6c88" }}>Press me!</Text>
-                  </TouchableOpacity>
                 </View>
               </View>
             </View>
           </ImageBackground>
         </Animated.View>
       </Modal>
+      <Modal visible={visMap}>
+        <View style={{ flex: 1 }}>
+          {location && (
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: location.latitude,
+                longitude: location.longitude,
+                latitudeDelta: 0.0,
+                longitudeDelta: 0.0,
+                zoom: -20,
+              }}
+              provider={MapView.PROVIDER_GOOGLE} // Use Google Maps
+            >
+              <Marker
+                coordinate={{
+                  latitude: location.latitude,
+                  longitude: location.longitude,
+                }}
+                title={"Você esta aqui"}
+                pinColor="blue" // Cor azul para destacar a localização atual
+              />
+              {locations.map((loc, index) => (
+                <Marker
+                  key={index}
+                  coordinate={{
+                    latitude: loc.latitude,
+                    longitude: loc.longitude,
+                  }}
+                  title={loc.title}
+                  description={loc.description}
+                />
+              ))}
+            </MapView>
+          )}
+
+          <TouchableOpacity
+            style={[StylesConteudo.btnVoltar, { marginTop: 50 }]}
+            onPress={() => setVisMap(false)}
+          >
+            <FontAwesome name="arrow-left" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+});

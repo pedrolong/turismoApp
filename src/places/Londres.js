@@ -8,9 +8,11 @@ import {
   Modal,
   StatusBar,
   Animated,
+  StyleSheet,
   Dimensions,
 } from "react-native";
-
+import MapView, { Marker } from "react-native-maps";
+import * as Location from "expo-location";
 // Imports icons
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -25,15 +27,41 @@ import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
 
 // Import Hook USESTATE
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { StylesConteudo } from "../styles/StylesConteudo";
 
 //
+
+const locations = [
+  {
+    latitude: 51.5074,
+    longitude: -0.1278,
+    title: "Londres",
+  },
+
+  // Adicione mais localizações conforme necessário
+];
 const { height: DEVICE_HEIGHT } = Dimensions.get("window");
 
 export default function Londres() {
   const [vis, setVis] = useState(false);
+  const [visMap, setVisMap] = useState(false);
   const [heightValue] = useState(new Animated.Value(0));
+
+  const [location, setLocation] = React.useState(null);
+
+  React.useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location.coords);
+    })();
+  }, []);
 
   const navigation = useNavigation();
   const [fontsLoaded] = useFonts({
@@ -68,7 +96,7 @@ export default function Londres() {
           </TouchableOpacity>
           <TouchableOpacity
             style={StylesConteudo.btnMaps}
-            onPress={() => alert("MAPS")}
+            onPress={() => setVisMap(true)}
           >
             <Fontisto name="world" size={24} color="white" />
           </TouchableOpacity>
@@ -76,7 +104,7 @@ export default function Londres() {
 
         <View style={StylesConteudo.header}>
           <View style={StylesConteudo.leftHeader}>
-            <Text style={StylesConteudo.TxtNomecidade}>the {"\n"}Londres</Text>
+            <Text style={StylesConteudo.TxtNomecidade}>Londres</Text>
             <Text style={StylesConteudo.TxtIntroduçaocidade}>
               Londres, a capital do Reino Unido, é uma das cidades mais
               vibrantes e culturalmente ricas do mundo.
@@ -85,7 +113,7 @@ export default function Londres() {
               style={StylesConteudo.btnMore}
               onPress={() => setVis(true)}
             >
-              <Text style={StylesConteudo.TxtbtnMore}>MORE</Text>
+              <Text style={StylesConteudo.TxtbtnMore}>MAIS</Text>
             </TouchableOpacity>
           </View>
           <View style={StylesConteudo.rigthHeader}>
@@ -97,7 +125,7 @@ export default function Londres() {
         </View>
       </View>
       <View style={StylesConteudo.Carossel}>
-        <Text style={StylesConteudo.TxtNomecidade}>Pictures:</Text>
+        <Text style={StylesConteudo.TxtNomecidade}>Fotos:</Text>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           <View style={StylesConteudo.BodyScroll}>
             <Image
@@ -131,7 +159,7 @@ export default function Londres() {
             />
             <Image
               style={StylesConteudo.ImgCarossel}
-              source={require("../assets/images/london.jpg")}
+              source={require("../assets/images/londres88.jpg")}
             />
             <Image
               style={StylesConteudo.ImgCarossel}
@@ -196,15 +224,66 @@ export default function Londres() {
                     estilo gótico do norte europeu, localizada na cidade de
                     Iorque, Inglaterra.
                   </Text>
-                  <TouchableOpacity style={StylesConteudo.BtnPressme}>
-                    <Text style={{ color: "#326e6c88" }}>Press me!</Text>
-                  </TouchableOpacity>
                 </View>
               </View>
             </View>
           </ImageBackground>
         </Animated.View>
       </Modal>
+      <Modal visible={visMap}>
+        <View style={{ flex: 1 }}>
+          {location && (
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: location.latitude,
+                longitude: location.longitude,
+                latitudeDelta: 0.0,
+                longitudeDelta: 0.0,
+                zoom: -20,
+              }}
+              provider={MapView.PROVIDER_GOOGLE} // Use Google Maps
+            >
+              <Marker
+                coordinate={{
+                  latitude: location.latitude,
+                  longitude: location.longitude,
+                }}
+                title={"Você esta aqui"}
+                pinColor="blue" // Cor azul para destacar a localização atual
+              />
+              {locations.map((loc, index) => (
+                <Marker
+                  key={index}
+                  coordinate={{
+                    latitude: loc.latitude,
+                    longitude: loc.longitude,
+                  }}
+                  title={loc.title}
+                  description={loc.description}
+                />
+              ))}
+            </MapView>
+          )}
+
+          <TouchableOpacity
+            style={[StylesConteudo.btnVoltar, { marginTop: 50 }]}
+            onPress={() => setVisMap(false)}
+          >
+            <FontAwesome name="arrow-left" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+});
