@@ -37,7 +37,7 @@ export default function Passeios() {
     uri: "https://i.pinimg.com/564x/70/63/8c/70638c755de3fc8d1d697a2c2a4fe86b.jpg",
   };
   const imgempire = {
-    uri: "https://www.aventurasp.com.br/imagens/carousel-caverna-do-diabo-01.jpg",
+    uri: "https://i.pinimg.com/564x/68/79/56/687956f8750b0b6bbcee3679295dc651.jpg",
   };
   const imgsantuariomeiji = {
     uri: "https://i.pinimg.com/564x/49/b9/d8/49b9d81bd8960bb6a91cd9eb1b51c3ea.jpg",

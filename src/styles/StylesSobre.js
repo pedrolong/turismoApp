@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 export const StylesSobre = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
     // Preencha todo o espaço que esta vazio/sobrando
   },
   txtSobre: {
@@ -22,8 +21,12 @@ export const StylesSobre = StyleSheet.create({
   titulocentral: {
     fontFamily: "PoetsenOne-Regular",
     color: "black",
-    fontSize: 15,
+    fontSize: 25,
     fontWeight: "Bold",
     textAlign: "center",
+    justifyContent: "center",
+  },
+  viewcabecalho: {
+    height: "15%",
   },
 });

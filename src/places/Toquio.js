@@ -10,10 +10,11 @@ import {
   Animated,
   Dimensions,
   StyleSheet,
+  ActivityIndicator,
 } from "react-native";
 
 import MapView, { Marker } from "react-native-maps";
-
+import axios from "axios";
 import * as Location from "expo-location";
 // Imports icons
 import { FontAwesome } from "@expo/vector-icons";
@@ -35,6 +36,9 @@ import { StylesConteudo } from "../styles/StylesConteudo";
 //
 const { height: DEVICE_HEIGHT } = Dimensions.get("window");
 
+const API_KEY = "03dd05e72c34ac72cadd07d2744007aa"; // Substitua com sua chave da API do OpenWeatherMap
+const latitude = 35.6895;
+const longitude = 139.6917;
 const locations = [
   {
     latitude: 35.6895,
@@ -50,6 +54,8 @@ export default function Toquio() {
   const [heightValue] = useState(new Animated.Value(0));
   const [visMap, setVisMap] = useState(false);
   const navigation = useNavigation();
+
+  const [weather, setWeather] = useState(null);
   const [fontsLoaded] = useFonts({
     "CormorantGaramond-Light": require("../assets/fonts/CormorantGaramond-Light.ttf"),
     "Caveat-VariableFont_wght": require("../assets/fonts/Caveat-VariableFont_wght.ttf"),
@@ -79,6 +85,22 @@ export default function Toquio() {
       }).start();
     }
   }, [vis, heightValue, DEVICE_HEIGHT]);
+
+  useEffect(() => {
+    fetchWeather();
+  }, []);
+
+  const fetchWeather = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`
+      );
+      setWeather(response.data);
+      console.log(` Console.log response.data: ${weather}`);
+    } catch (err) {
+      console.log("Local não encontrado ou erro na requisição.");
+    }
+  };
 
   if (!fontsLoaded) {
     return null;
@@ -215,7 +237,13 @@ export default function Toquio() {
                       size={24}
                       color="#ffffff"
                     />
-                    <Text style={StylesConteudo.TxtLocalizaçao}>20ºC</Text>
+                    <Text style={StylesConteudo.TxtLocalizaçao}>
+                      {weather ? (
+                        `${weather.main.temp}°C`
+                      ) : (
+                        <ActivityIndicator size="small" color="#ffffff" />
+                      )}
+                    </Text>
                   </View>
                   <View style={StylesConteudo.AlgInformaçao2}>
                     <Fontisto name="date" size={24} color="#ffffff" />

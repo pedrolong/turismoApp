@@ -10,6 +10,7 @@ import {
   Animated,
   Dimensions,
   StyleSheet,
+  ActivityIndicator,
 } from "react-native";
 
 import MapView, { Marker } from "react-native-maps";
@@ -33,9 +34,12 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { StylesConteudo } from "../styles/StylesConteudo";
 
+import axios from "axios";
 //
 const { height: DEVICE_HEIGHT } = Dimensions.get("window");
-
+const API_KEY = "03dd05e72c34ac72cadd07d2744007aa"; // Substitua com sua chave da API do OpenWeatherMap
+const latitude = 48.8566;
+const longitude = 2.3522;
 const locations = [
   { latitude: 48.8566, longitude: 2.3522, title: "Paris" },
 
@@ -45,7 +49,7 @@ const locations = [
 export default function Paris() {
   const [vis, setVis] = useState(false);
   const [heightValue] = useState(new Animated.Value(0));
-
+  const [weather, setWeather] = useState(null);
   const navigation = useNavigation();
   const [fontsLoaded] = useFonts({
     "CormorantGaramond-Light": require("../assets/fonts/CormorantGaramond-Light.ttf"),
@@ -77,6 +81,22 @@ export default function Paris() {
       }).start();
     }
   }, [vis, heightValue, DEVICE_HEIGHT]);
+
+  useEffect(() => {
+    fetchWeather();
+  }, []);
+
+  const fetchWeather = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`
+      );
+      setWeather(response.data);
+      console.log(` Console.log response.data: ${weather}`);
+    } catch (err) {
+      console.log("Local não encontrado ou erro na requisição.");
+    }
+  };
 
   if (!fontsLoaded) {
     return null;
@@ -208,7 +228,13 @@ export default function Paris() {
                       size={24}
                       color="#ffffff"
                     />
-                    <Text style={StylesConteudo.TxtLocalizaçao}>19ºC</Text>
+                    <Text style={StylesConteudo.TxtLocalizaçao}>
+                      {weather ? (
+                        `${weather.main.temp}°C`
+                      ) : (
+                        <ActivityIndicator size="small" color="#ffffff" />
+                      )}
+                    </Text>
                   </View>
                   <View style={StylesConteudo.AlgInformaçao2}>
                     <Fontisto name="date" size={24} color="#ffffff" />

@@ -57,7 +57,7 @@ export const StylesTelaInicio = {
   btninicio: {
     width: 70,
     height: 50,
-    backgroundColor: "#bb98af",
+    backgroundColor: "#326e6c",
     borderRadius: 50,
     justifyContent: "center",
     alignItems: "center",

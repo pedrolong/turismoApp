@@ -10,6 +10,7 @@ import {
   Animated,
   StyleSheet,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
@@ -31,7 +32,10 @@ import React, { useState, useEffect } from "react";
 import { StylesConteudo } from "../styles/StylesConteudo";
 
 //
-
+import axios from "axios";
+const API_KEY = "03dd05e72c34ac72cadd07d2744007aa"; // Substitua com sua chave da API do OpenWeatherMap
+const latitude = 51.5074;
+const longitude = -0.1278;
 const locations = [
   {
     latitude: 51.5074,
@@ -47,6 +51,7 @@ export default function Londres() {
   const [vis, setVis] = useState(false);
   const [visMap, setVisMap] = useState(false);
   const [heightValue] = useState(new Animated.Value(0));
+  const [weather, setWeather] = useState(null);
 
   const [location, setLocation] = React.useState(null);
 
@@ -79,6 +84,22 @@ export default function Londres() {
       }).start();
     }
   }, [vis, heightValue, DEVICE_HEIGHT]);
+
+  useEffect(() => {
+    fetchWeather();
+  }, []);
+
+  const fetchWeather = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`
+      );
+      setWeather(response.data);
+      console.log(` Console.log response.data: ${weather}`);
+    } catch (err) {
+      console.log("Local não encontrado ou erro na requisição.");
+    }
+  };
 
   if (!fontsLoaded) {
     return null;
@@ -209,7 +230,13 @@ export default function Londres() {
                       size={24}
                       color="#ffffff"
                     />
-                    <Text style={StylesConteudo.TxtLocalizaçao}>19ºC</Text>
+                    <Text style={StylesConteudo.TxtLocalizaçao}>
+                      {weather ? (
+                        `${weather.main.temp}°C`
+                      ) : (
+                        <ActivityIndicator size="small" color="#ffffff" />
+                      )}
+                    </Text>
                   </View>
                   <View style={StylesConteudo.AlgInformaçao2}>
                     <Fontisto name="date" size={24} color="#ffffff" />

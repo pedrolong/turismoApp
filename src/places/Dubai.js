@@ -10,11 +10,12 @@ import {
   Animated,
   Dimensions,
   StyleSheet,
+  ActivityIndicator,
 } from "react-native";
 
 import MapView, { Marker } from "react-native-maps";
-
 import * as Location from "expo-location";
+import axios from "axios"; // Certifique-se de importar axios
 
 // Imports icons
 import { FontAwesome } from "@expo/vector-icons";
@@ -33,9 +34,11 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { StylesConteudo } from "../styles/StylesConteudo";
 
-//
+const API_KEY = "03dd05e72c34ac72cadd07d2744007aa"; // Substitua com sua chave da API do OpenWeatherMap
 const { height: DEVICE_HEIGHT } = Dimensions.get("window");
 
+const latitude = 25.276987;
+const longitude = 55.296249;
 const locations = [
   {
     latitude: 25.276987,
@@ -49,6 +52,7 @@ const locations = [
 export default function Dubai() {
   const [vis, setVis] = useState(false);
   const [heightValue] = useState(new Animated.Value(0));
+  const [weather, setWeather] = useState(null);
 
   const navigation = useNavigation();
   const [fontsLoaded] = useFonts({
@@ -58,8 +62,9 @@ export default function Dubai() {
   });
   const [visMap, setVisMap] = useState(false);
 
-  const [location, setLocation] = React.useState(null);
-  React.useEffect(() => {
+  const [location, setLocation] = useState(null);
+
+  useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
@@ -81,6 +86,22 @@ export default function Dubai() {
       }).start();
     }
   }, [vis, heightValue, DEVICE_HEIGHT]);
+
+  useEffect(() => {
+    fetchWeather();
+  }, []);
+
+  const fetchWeather = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`
+      );
+      setWeather(response.data);
+      console.log(` Console.log response.data: ${weather}`);
+    } catch (err) {
+      console.log("Local não encontrado ou erro na requisição.");
+    }
+  };
 
   if (!fontsLoaded) {
     return null;
@@ -218,7 +239,13 @@ export default function Dubai() {
                       size={24}
                       color="#ffffff"
                     />
-                    <Text style={StylesConteudo.TxtLocalizaçao}>33ºC</Text>
+                    <Text style={StylesConteudo.TxtLocalizaçao}>
+                      {weather ? (
+                        `${weather.main.temp}°C`
+                      ) : (
+                        <ActivityIndicator size="small" color="#ffffff" />
+                      )}
+                    </Text>
                   </View>
                   <View style={StylesConteudo.AlgInformaçao2}>
                     <Fontisto name="date" size={24} color="#ffffff" />
@@ -287,6 +314,7 @@ export default function Dubai() {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
