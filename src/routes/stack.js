@@ -11,6 +11,7 @@ import Dubai from "../places/Dubai";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Veneza from "../places/Veneza";
+import Passeios from "../pages/Passeios";
 
 const Stack = createNativeStackNavigator();
 
@@ -55,6 +56,11 @@ export default function StackRoute() {
       <Stack.Screen
         name="Veneza"
         component={Veneza}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Passeios"
+        component={Passeios}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

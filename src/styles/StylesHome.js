@@ -67,7 +67,6 @@ export const StylesHome = {
     height: 10,
     borderRadius: 10,
     backgroundColor: "#326e6c",
-    marginTop: 5,
   },
   txttours: {
     fontFamily: "CormorantGaramond-Light",
@@ -80,11 +79,6 @@ export const StylesHome = {
     borderRadius: 10,
     backgroundColor: "white",
     marginTop: 5,
-  },
-  txtadventures: {
-    fontFamily: "CormorantGaramond-Light",
-    color: "black",
-    fontSize: 18,
   },
   bolinhaadventures: {
     width: 10,

@@ -10,6 +10,7 @@ import Mapa from "../pages/maps";
 // Import icons FONTAWESOME
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import StackRoute from "../routes/stack";
+import Passeios from "../pages/Passeios";
 
 const Tab = createBottomTabNavigator();
 
@@ -48,8 +49,6 @@ export default function Index() {
               iconName = "home";
             } else if (route.name === "Sobre") {
               iconName = "newspaper-o";
-            } else if (route.name === "Busca") {
-              iconName = "search";
             } else if (route.name === "Mapa") {
               iconName = "map";
             }
@@ -82,12 +81,7 @@ export default function Index() {
           component={Sobre}
           options={{ title: "", headerShown: false }}
         />
-        {/* 
-        <Tab.Screen
-          name="Busca"
-          component={Busca}
-          options={{ title: "", headerShown: false }}
-        /> */}
+
         <Tab.Screen
           name="Mapa"
           component={Mapa}

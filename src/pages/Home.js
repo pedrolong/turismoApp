@@ -17,6 +17,8 @@ import { useFonts } from "expo-font";
 // Import useNavigation
 import { useNavigation } from "@react-navigation/native";
 
+import TxtPasseios from "../components/TxtPasseio";
+
 const data = [
   // Links das imagens ultilizadas no carousel e nas telas de informações
   {
@@ -95,13 +97,9 @@ export default function Home() {
             <Text style={StylesHome.txtlocais}>Locais </Text>
             <View style={StylesHome.bolinhalocais}></View>
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={StylesHome.txttours}>Passeios</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Passeios")}>
+            <Text style={StylesHome.txttours}>Passeio </Text>
             <View style={StylesHome.bolinhatours}></View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={StylesHome.txtadventures}>Aventuras</Text>
-            <View style={StylesHome.bolinhaadventures}></View>
           </TouchableOpacity>
         </View>
         <View style={StylesHome.alturabtnscidades}>
