@@ -1,4 +1,6 @@
-### Como inicializar nosso projeto??
+<img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Airplane_icon.svg" width="50" height="50" alt="Aviao">
+
+### Como inicializar nosso projeto?? ✈️
 
 - No linux, da o comando ```"CTRL + ALT + T"``` para abrir o terminal 
 
