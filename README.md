@@ -1,6 +1,6 @@
 Como inicializar nosso projeto??
 
-No linux, da o comando '''"CTRL + ALT + T"''' para abrir o terminal 
+No linux, da o comando ```"CTRL + ALT + T"``` para abrir o terminal 
 
 Digite no terminal "git clone https://github.com/caroline176/turismoApp.git" para clonar nosso repositorio.
 
