@@ -8,7 +8,7 @@ Segui abaixo um passo a passo!
 
 - ↔️ Digite no terminal ``` "git clone https://github.com/caroline176/turismoApp.git" ``` para clonar nosso repositorio.
 
-  -  🔖  No terminal coloque ``` "npm install"``` para os pacotes basicos.
+- 🔖  No terminal coloque ``` "npm install"``` para os pacotes basicos.
  
  - ↔️ Rode o comando ``` "source bin activate" ``` na pasta onde esta o instalado o Nodeenv-js
  
@@ -20,7 +20,7 @@ Segui abaixo um passo a passo!
  
  - 📱 Digite  ``` "npx expo start --tunnel" ``` para iniciar o projeto com conexão externas
  
- - Ira abrir um QR code, então escaneie o codigo atraves do app "Expo Go", clique no botão "Scan QR code" isso no android. 
+ - 📱 Ira abrir um QR code, então escaneie o codigo atraves do app "Expo Go", clique no botão "Scan QR code" isso no android. 
  Já no IOS, vá até a camera e leia o QR code, que ira abrir diretamente no app.
  
  
