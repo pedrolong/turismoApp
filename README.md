@@ -10,11 +10,11 @@ Digite no terminal "git clone https://github.com/caroline176/turismoApp.git" par
  
  Se não tiver o Nodeenv-js instalado, instale com "sudo apt-get install -y nodejs"
  
- Entre na pasta onde estiver o repositorio com "cd" 
+ Entre na pasta onde estiver o repositorio, com "cd ~/nomedapasta" 
  
  Escreva "npx expo install react-native-app react-dom @expo/metro-runtime" 
  
- Digite "npx expo start --tunnel"
+ Digite "npx expo start --tunnel" para iniciar o projeto com conexão externas
  
  Ira abrir um QR code, então escaneie o codigo atraves do app "Expo Go", clique no botão "Scan QR code" isso no android. 
  Já no IOS, vá até a camera e leia o QR code, que ira abrir diretamente no app.
