@@ -1,6 +1,6 @@
 Nosso projeto é um aplicativo de turismo focada em cidades famosas para mobile.
 Mas como faço para abrir nosso aplicativo??
-Segui abaixo um passo a passo! 
+Segue abaixo um passo a passo! 
 
 ### Como inicializar nosso projeto?? ✈️
 
